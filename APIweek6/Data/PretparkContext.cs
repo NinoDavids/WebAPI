@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using API.Models;
+using APIweek6.Models;
 
-    public class PretparkContext : IdentityDbContext
+public class PretparkContext : IdentityDbContext<User.ApplicationUser>
     {
         public PretparkContext (DbContextOptions<PretparkContext> options)
             : base(options)
         {
         }
 
-        public DbSet<API.Models.Attractie> Attractie { get; set; } = default!;
+        public DbSet<Attractie> Attractie { get; set; } = default!;
     }
