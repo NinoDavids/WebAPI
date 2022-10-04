@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using APIweek6.Models;
 
 namespace API.Models;
 

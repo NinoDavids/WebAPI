@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using API.Models;
 using APIweek6.Models;
+using Microsoft.AspNetCore.Identity;
 
 public class PretparkContext : IdentityDbContext<User.ApplicationUser>
     {
@@ -13,6 +14,6 @@ public class PretparkContext : IdentityDbContext<User.ApplicationUser>
             : base(options)
         {
         }
-
         public DbSet<Attractie> Attractie { get; set; } = default!;
+        
     }
