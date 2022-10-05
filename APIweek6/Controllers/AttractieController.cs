@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API.Models;
+using APIweek6.Data;
 using Microsoft.AspNetCore.Authorization;
 
 namespace APIweek6.Controllers
@@ -115,6 +116,56 @@ namespace APIweek6.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+        [HttpGet("{id}/Name")]
+        public async Task<ActionResult<String>> GetAttractieName(int id)
+        {
+            if (_context.Attractie == null)
+            {
+                return NotFound();
+            }
+            var attractie = await _context.Attractie.FindAsync(id);
+
+            if (attractie == null)
+            {
+                return NotFound();
+            }
+
+            return attractie.name;
+        }
+
+        [HttpGet("{id}/Spooky")]
+        public async Task<ActionResult<int>> GetAttractieSpooky(int id)
+        {
+            if (_context.Attractie == null)
+            {
+                return NotFound();
+            }
+            var attractie = await _context.Attractie.FindAsync(id);
+
+            if (attractie == null)
+            {
+                return NotFound();
+            }
+
+            return attractie.spooky;
+        }
+
+        [HttpGet("{id}/BuildYear")]
+        public async Task<ActionResult<DateTime>> GetAttractieDate(int id)
+        {
+            if (_context.Attractie == null)
+            {
+                return NotFound();
+            }
+            var attractie = await _context.Attractie.FindAsync(id);
+
+            if (attractie == null)
+            {
+                return NotFound();
+            }
+
+            return attractie.buildYeaar;
         }
 
         private bool AttractieExists(int id)

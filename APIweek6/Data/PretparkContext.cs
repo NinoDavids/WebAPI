@@ -8,12 +8,15 @@ using API.Models;
 using APIweek6.Models;
 using Microsoft.AspNetCore.Identity;
 
-public class PretparkContext : IdentityDbContext<User.ApplicationUser>
+namespace APIweek6.Data
+{
+    public class PretparkContext : IdentityDbContext<User>
     {
         public PretparkContext (DbContextOptions<PretparkContext> options)
             : base(options)
         {
         }
         public DbSet<Attractie> Attractie { get; set; } = default!;
-        
     }
+}
+

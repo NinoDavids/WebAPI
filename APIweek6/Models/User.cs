@@ -2,13 +2,9 @@ using API.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace APIweek6.Models;
-
-public class User
-{        
-    public enum Gender { Male, Female, Other, Hidden }
-    public class ApplicationUser : IdentityUser
-    {
-        public Gender Gender { get; set; }
-        
-    }
+public enum Gender
+{ Hidden = 0, Male = 1, Female = 2, Other = 3}
+public class User : IdentityUser
+{
+    public Gender Gender { get; set; }
 }

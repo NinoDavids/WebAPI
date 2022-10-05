@@ -1,12 +1,12 @@
+using APIweek6.Data;
 using APIweek6.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddIdentity<User.ApplicationUser, IdentityRole>()
+builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<PretparkContext>()
     .AddDefaultTokenProviders();
 builder.Services.AddDbContext<PretparkContext>(options =>
