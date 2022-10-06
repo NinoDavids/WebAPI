@@ -35,6 +35,7 @@ namespace APIweek6.Controllers
         }
 
         // GET: api/Attractie/5
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<Attractie>> GetAttractie(int id)
         {

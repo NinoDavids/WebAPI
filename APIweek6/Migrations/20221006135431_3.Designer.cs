@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APIweek6.Migrations
 {
     [DbContext(typeof(PretparkContext))]
-    [Migration("20221005130353_3")]
+    [Migration("20221006135431_3")]
     partial class _3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
