@@ -58,7 +58,7 @@ namespace APIweek6.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAttractie(int id, Attractie attractie)
         {
-            if (id != attractie.ID)
+            if (id != attractie.Id)
             {
                 return BadRequest();
             }
@@ -96,7 +96,7 @@ namespace APIweek6.Controllers
             _context.Attractie.Add(attractie);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAttractie", new { id = attractie.ID }, attractie);
+            return CreatedAtAction("GetAttractie", new { id = attractie.Id }, attractie);
         }
 
         // DELETE: api/Attractie/5
@@ -171,7 +171,7 @@ namespace APIweek6.Controllers
 
         private bool AttractieExists(int id)
         {
-            return (_context.Attractie?.Any(e => e.ID == id)).GetValueOrDefault();
+            return (_context.Attractie?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

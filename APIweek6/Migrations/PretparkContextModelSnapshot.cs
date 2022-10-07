@@ -19,7 +19,7 @@ namespace APIweek6.Migrations
 
             modelBuilder.Entity("API.Models.Attractie", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -33,9 +33,24 @@ namespace APIweek6.Migrations
                     b.Property<int>("spooky")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("Attractie");
+                });
+
+            modelBuilder.Entity("APIweek6.Models.LikedAttractie", b =>
+                {
+                    b.Property<int>("AttractieId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("AttractieId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("LikedAttractie");
                 });
 
             modelBuilder.Entity("APIweek6.Models.User", b =>
@@ -233,6 +248,25 @@ namespace APIweek6.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("APIweek6.Models.LikedAttractie", b =>
+                {
+                    b.HasOne("API.Models.Attractie", "Attractie")
+                        .WithMany("LikedAttracties")
+                        .HasForeignKey("AttractieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("APIweek6.Models.User", "User")
+                        .WithMany("LikedAttracties")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Attractie");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -282,6 +316,16 @@ namespace APIweek6.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("API.Models.Attractie", b =>
+                {
+                    b.Navigation("LikedAttracties");
+                });
+
+            modelBuilder.Entity("APIweek6.Models.User", b =>
+                {
+                    b.Navigation("LikedAttracties");
                 });
 #pragma warning restore 612, 618
         }

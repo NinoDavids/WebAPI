@@ -45,10 +45,6 @@ public class AccountController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<User>> GetUserWithID(String id)
     {
-        if (_userManager == null)
-        {
-            return NotFound();
-        }
         User user = await _userManager.FindByIdAsync(id);
         if (user == null)
         {
@@ -60,10 +56,6 @@ public class AccountController : ControllerBase
     [HttpGet("{username}")]
     public async Task<ActionResult<User>> GetUserWithName(String username)
     {
-        if (_userManager == null)
-        {
-            return NotFound();
-        }
         User user = await _userManager.FindByNameAsync(username);
         if (user == null)
         {

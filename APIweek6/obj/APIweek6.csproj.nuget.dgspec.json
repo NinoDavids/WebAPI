@@ -1,28 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Nino\\RiderProjects\\APIweek6\\WebAPI\\APIweek6\\APIweek6.csproj": {}
+    "C:\\Users\\Nino\\Documents\\GitHub\\WebAPI\\APIweek6\\APIweek6.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Nino\\RiderProjects\\APIweek6\\WebAPI\\APIweek6\\APIweek6.csproj": {
+    "C:\\Users\\Nino\\Documents\\GitHub\\WebAPI\\APIweek6\\APIweek6.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Nino\\RiderProjects\\APIweek6\\WebAPI\\APIweek6\\APIweek6.csproj",
+        "projectUniqueName": "C:\\Users\\Nino\\Documents\\GitHub\\WebAPI\\APIweek6\\APIweek6.csproj",
         "projectName": "APIweek6",
-        "projectPath": "C:\\Users\\Nino\\RiderProjects\\APIweek6\\WebAPI\\APIweek6\\APIweek6.csproj",
+        "projectPath": "C:\\Users\\Nino\\Documents\\GitHub\\WebAPI\\APIweek6\\APIweek6.csproj",
         "packagesPath": "C:\\Users\\Nino\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Nino\\RiderProjects\\APIweek6\\WebAPI\\APIweek6\\obj\\",
+        "outputPath": "C:\\Users\\Nino\\Documents\\GitHub\\WebAPI\\APIweek6\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Nino\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Nino\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

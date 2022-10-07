@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace APIweek6.Migrations
 {
-    public partial class _3 : Migration
+    public partial class Test69420 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -53,7 +53,7 @@ namespace APIweek6.Migrations
                 name: "Attractie",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     name = table.Column<string>(type: "TEXT", nullable: false),
                     spooky = table.Column<int>(type: "INTEGER", nullable: false),
@@ -61,7 +61,7 @@ namespace APIweek6.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Attractie", x => x.ID);
+                    table.PrimaryKey("PK_Attractie", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -170,6 +170,30 @@ namespace APIweek6.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "LikedAttractie",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
+                    AttractieId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LikedAttractie", x => new { x.AttractieId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_LikedAttractie_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LikedAttractie_Attractie_AttractieId",
+                        column: x => x.AttractieId,
+                        principalTable: "Attractie",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -206,6 +230,11 @@ namespace APIweek6.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LikedAttractie_UserId",
+                table: "LikedAttractie",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -226,13 +255,16 @@ namespace APIweek6.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Attractie");
+                name: "LikedAttractie");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Attractie");
         }
     }
 }

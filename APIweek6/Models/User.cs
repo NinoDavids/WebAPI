@@ -1,4 +1,5 @@
 using API.Models;
+using MessagePack;
 using Microsoft.AspNetCore.Identity;
 
 namespace APIweek6.Models;
@@ -7,4 +8,5 @@ public enum Gender
 public class User : IdentityUser
 {
     public Gender Gender { get; set; }
+    public ICollection<LikedAttractie> LikedAttracties { get; set; }
 }
