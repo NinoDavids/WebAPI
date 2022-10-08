@@ -22,7 +22,12 @@ builder.Services.AddAuthorization(options =>
         policy.RequireRole("Administrator", "PowerUser", "BackupAdministrator"));
 });
 
-builder.Services.AddAuthentication(opt =>
+builder.Services.AddControllersWithViews()
+    .AddNewtonsoftJson(options =>
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+    );
+
+/*builder.Services.AddAuthentication(opt =>
 {
     opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -38,7 +43,7 @@ builder.Services.AddAuthentication(opt =>
         ValidAudience = "https://localhost:7277",
         IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("awef98awef978haweof8g7aw789efhh789awef8h9awh89efh89awe98f89uawef9j8aw89hefawef"))
     };
-});
+});*/
 
 
 // Add services to the container.

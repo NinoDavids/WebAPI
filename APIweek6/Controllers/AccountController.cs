@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Text;
 using API.Models;
@@ -23,10 +24,12 @@ public class GebruikerMetWachwoord : User
 public class AccountController : ControllerBase
 {
     private readonly UserManager<User> _userManager;
+    private readonly SignInManager<User> _signInManager;
 
-    public AccountController(UserManager<User> userManager)
+    public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
     {
         _userManager = userManager;
+        _signInManager = signInManager;
     }
 
     [HttpPost]
@@ -69,8 +72,20 @@ public class AccountController : ControllerBase
         public string? UserName { get; init; }
         public string? Password { get; init; }
     }
+
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] GebruikerLogin gebruikerLogin)
+    {
+        User user = await _userManager.FindByNameAsync(gebruikerLogin.UserName);
+        if (user != null)
+        {
+            await _signInManager.SignInAsync(user, true);
+            return Ok();
+        }
+
+        return Unauthorized();
+    }
+    /*public async Task<IActionResult> Login([FromBody] GebruikerLogin gebruikerLogin)
     {
         var _user = await _userManager.FindByNameAsync(gebruikerLogin.UserName);
         if (_user != null)
@@ -95,5 +110,5 @@ public class AccountController : ControllerBase
             }
 
         return Unauthorized();
-    }
+    }*/
 }

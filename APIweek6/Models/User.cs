@@ -8,5 +8,5 @@ public enum Gender
 public class User : IdentityUser
 {
     public Gender Gender { get; set; }
-    public ICollection<LikedAttractie> LikedAttracties { get; set; }
+    public ICollection<LikedAttractie>? LikedAttracties { get; set; }
 }

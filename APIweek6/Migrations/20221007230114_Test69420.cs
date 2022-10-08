@@ -174,8 +174,8 @@ namespace APIweek6.Migrations
                 name: "LikedAttractie",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    AttractieId = table.Column<int>(type: "INTEGER", nullable: false)
+                    AttractieId = table.Column<int>(type: "INTEGER", nullable: false),
+                    UserId = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {

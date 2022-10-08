@@ -23,8 +23,6 @@ namespace APIweek6.Data
         {
             base.OnModelCreating(modelBuilder);
             
-            
-            
             modelBuilder.Entity<LikedAttractie>()
                 .HasKey(bc => new { bc.AttractieId, bc.UserId });  
 

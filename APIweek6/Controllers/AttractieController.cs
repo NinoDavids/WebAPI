@@ -121,10 +121,6 @@ namespace APIweek6.Controllers
         [HttpGet("{id}/Name")]
         public async Task<ActionResult<String>> GetAttractieName(int id)
         {
-            if (_context.Attractie == null)
-            {
-                return NotFound();
-            }
             var attractie = await _context.Attractie.FindAsync(id);
 
             if (attractie == null)

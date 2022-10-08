@@ -10,5 +10,5 @@ public class Attractie
     public string name { get; set; }
     public int spooky { get; set; }
     public DateTime buildYeaar { get; set; }
-    public ICollection<LikedAttractie> LikedAttracties { get; set; }
+    public ICollection<LikedAttractie>? LikedAttracties { get; set; }
 }
