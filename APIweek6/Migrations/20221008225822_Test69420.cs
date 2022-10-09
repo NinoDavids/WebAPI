@@ -194,6 +194,76 @@ namespace APIweek6.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "6c279b39-5a0e-4d52-b9c0-184c928dbc44", "fc4dcfe2-2bee-4dbe-bd7b-15ea9f3bfc60", "Gast", "GAST" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "9171e04d-0c10-421d-9efd-4cbbbee0eb69", "4cb24b93-8cbe-480a-8048-84e6e5b42df6", "Medewerker", "MEDEWERKER" });
+
+            migrationBuilder.InsertData(
+                table: "Attractie",
+                columns: new[] { "Id", "buildYeaar", "name", "spooky" },
+                values: new object[] { 1, new DateTime(2001, 11, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), "Reuzenrat", 5 });
+
+            migrationBuilder.InsertData(
+                table: "Attractie",
+                columns: new[] { "Id", "buildYeaar", "name", "spooky" },
+                values: new object[] { 2, new DateTime(2005, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Splash", 20 });
+
+            migrationBuilder.InsertData(
+                table: "Attractie",
+                columns: new[] { "Id", "buildYeaar", "name", "spooky" },
+                values: new object[] { 3, new DateTime(666, 1, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "Spookhuis", 60 });
+
+            migrationBuilder.InsertData(
+                table: "Attractie",
+                columns: new[] { "Id", "buildYeaar", "name", "spooky" },
+                values: new object[] { 4, new DateTime(2002, 2, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), "Airborne", 50 });
+
+            migrationBuilder.InsertData(
+                table: "Attractie",
+                columns: new[] { "Id", "buildYeaar", "name", "spooky" },
+                values: new object[] { 5, new DateTime(1999, 8, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), "Babyflug", 5 });
+
+            migrationBuilder.InsertData(
+                table: "Attractie",
+                columns: new[] { "Id", "buildYeaar", "name", "spooky" },
+                values: new object[] { 6, new DateTime(1985, 9, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), "Draaimolen", 5 });
+
+            migrationBuilder.InsertData(
+                table: "Attractie",
+                columns: new[] { "Id", "buildYeaar", "name", "spooky" },
+                values: new object[] { 7, new DateTime(2008, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "Huricane", 45 });
+
+            migrationBuilder.InsertData(
+                table: "Attractie",
+                columns: new[] { "Id", "buildYeaar", "name", "spooky" },
+                values: new object[] { 8, new DateTime(2019, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), "Tea cups", 10 });
+
+            migrationBuilder.InsertData(
+                table: "Attractie",
+                columns: new[] { "Id", "buildYeaar", "name", "spooky" },
+                values: new object[] { 9, new DateTime(2020, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Pusher", 80 });
+
+            migrationBuilder.InsertData(
+                table: "Attractie",
+                columns: new[] { "Id", "buildYeaar", "name", "spooky" },
+                values: new object[] { 10, new DateTime(1996, 11, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "Rups", 20 });
+
+            migrationBuilder.InsertData(
+                table: "Attractie",
+                columns: new[] { "Id", "buildYeaar", "name", "spooky" },
+                values: new object[] { 11, new DateTime(1998, 1, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "Cake Walk", 0 });
+
+            migrationBuilder.InsertData(
+                table: "Attractie",
+                columns: new[] { "Id", "buildYeaar", "name", "spooky" },
+                values: new object[] { 12, new DateTime(2016, 4, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), "Toxic", 95 });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",

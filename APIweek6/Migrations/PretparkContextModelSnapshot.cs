@@ -36,6 +36,92 @@ namespace APIweek6.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Attractie");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            buildYeaar = new DateTime(2001, 11, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            name = "Reuzenrat",
+                            spooky = 5
+                        },
+                        new
+                        {
+                            Id = 2,
+                            buildYeaar = new DateTime(2005, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            name = "Splash",
+                            spooky = 20
+                        },
+                        new
+                        {
+                            Id = 3,
+                            buildYeaar = new DateTime(666, 1, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            name = "Spookhuis",
+                            spooky = 60
+                        },
+                        new
+                        {
+                            Id = 4,
+                            buildYeaar = new DateTime(2002, 2, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            name = "Airborne",
+                            spooky = 50
+                        },
+                        new
+                        {
+                            Id = 5,
+                            buildYeaar = new DateTime(1999, 8, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            name = "Babyflug",
+                            spooky = 5
+                        },
+                        new
+                        {
+                            Id = 6,
+                            buildYeaar = new DateTime(1985, 9, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            name = "Draaimolen",
+                            spooky = 5
+                        },
+                        new
+                        {
+                            Id = 7,
+                            buildYeaar = new DateTime(2008, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            name = "Huricane",
+                            spooky = 45
+                        },
+                        new
+                        {
+                            Id = 8,
+                            buildYeaar = new DateTime(2019, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            name = "Tea cups",
+                            spooky = 10
+                        },
+                        new
+                        {
+                            Id = 9,
+                            buildYeaar = new DateTime(2020, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            name = "Pusher",
+                            spooky = 80
+                        },
+                        new
+                        {
+                            Id = 10,
+                            buildYeaar = new DateTime(1996, 11, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            name = "Rups",
+                            spooky = 20
+                        },
+                        new
+                        {
+                            Id = 11,
+                            buildYeaar = new DateTime(1998, 1, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            name = "Cake Walk",
+                            spooky = 0
+                        },
+                        new
+                        {
+                            Id = 12,
+                            buildYeaar = new DateTime(2016, 4, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            name = "Toxic",
+                            spooky = 95
+                        });
                 });
 
             modelBuilder.Entity("APIweek6.Models.LikedAttractie", b =>
@@ -144,6 +230,22 @@ namespace APIweek6.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "9171e04d-0c10-421d-9efd-4cbbbee0eb69",
+                            ConcurrencyStamp = "4cb24b93-8cbe-480a-8048-84e6e5b42df6",
+                            Name = "Medewerker",
+                            NormalizedName = "MEDEWERKER"
+                        },
+                        new
+                        {
+                            Id = "6c279b39-5a0e-4d52-b9c0-184c928dbc44",
+                            ConcurrencyStamp = "fc4dcfe2-2bee-4dbe-bd7b-15ea9f3bfc60",
+                            Name = "Gast",
+                            NormalizedName = "GAST"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

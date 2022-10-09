@@ -30,35 +30,18 @@ namespace APIweek6.Controllers
         
         
         // GET: api/LikedAttractie
+        [Authorize(Roles = "Medewerker")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LikedAttractie>>> GetLikedAttractie()
         {
             return await _context.LikedAttractie.ToListAsync();
         }
 
-        // GET: api/LikedAttractie/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<LikedAttractie>> GetLikedAttractie(int id)
-        {
-            var likedAttractie = await _context.LikedAttractie.FindAsync(id);
-
-            if (likedAttractie == null)
-            {
-                return NotFound();
-            }
-
-            return likedAttractie;
-        }
-
-        // PUT: api/LikedAttractie/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "Medewerker")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutLikedAttractie(int id, LikedAttractie likedAttractie)
         {
-            if (id != likedAttractie.AttractieId)
-            {
-                return BadRequest();
-            }
+            if (id != likedAttractie.AttractieId) return BadRequest();
 
             _context.Entry(likedAttractie).State = EntityState.Modified;
 
@@ -68,38 +51,79 @@ namespace APIweek6.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!LikedAttractieExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                if (!LikedAttractieExists(id)) return NotFound();
+                
+                else throw;
             }
 
             return NoContent();
         }
         
+        [Authorize(Roles = "Medewerker")]
+        [HttpGet("getUsernames/{attractieName}")]
+        public async Task<ActionResult<IEnumerable<string>>> GetPeopleWhoLikedAttractie(string attractieName)
+        {
+            var attractieList = await _context.Attractie.Where(x => x.name == attractieName).ToListAsync();
+            
+            if (attractieList.Count == 0 || attractieList.Count > 1) return NotFound();
+
+            Attractie attractie = attractieList[0];
+
+            var likedAttractieList = await _context.LikedAttractie.Where(x => x.AttractieId == attractie.Id).ToListAsync();
+            
+            List<string> usernames = new List<string>();
+
+            foreach (var likedAttractie in likedAttractieList)
+            {
+                User user = await _userManager.FindByIdAsync(likedAttractie.UserId);
+                usernames.Add(user.UserName);
+            }
+
+            return usernames;
+        }
+        [Authorize(Roles = "Medewerker")]
+        [HttpGet("getAmountOfLikes/{attractieName}")]
+        public async Task<ActionResult<string>> GetAmountOfLikesOnAttractie(string attractieName)
+        {
+            var attractieList = await _context.Attractie.Where(x => x.name == attractieName).ToListAsync();
+            
+            if (attractieList.Count == 0 || attractieList.Count > 1) return NotFound();
+
+            Attractie attractie = attractieList[0];
+
+            List<LikedAttractie> likedAttracties = await _context.LikedAttractie.Where(x => x.AttractieId == attractie.Id).ToListAsync();
+
+            if (likedAttracties.Count == 1) return attractie.name + " has: " + likedAttracties.Count + " like";
+                
+            return attractie.name + " has: " + likedAttracties.Count + " likes";
+        }
+        [Authorize(Roles = "Medewerker")]
+        [HttpGet("getLikes/{attractieName}")]
+        public async Task<ActionResult<IEnumerable<LikedAttractie>>> GetLikesOnAttractie(string attractieName)
+        {
+            var attractieList = await _context.Attractie.Where(x => x.name == attractieName).ToListAsync();
+            
+            if (attractieList.Count == 0 || attractieList.Count > 1) return NotFound();
+
+            Attractie attractie = attractieList[0];
+
+            return await _context.LikedAttractie.Where(x => x.AttractieId == attractie.Id).ToListAsync();
+        }
+        
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult<LikedAttractie>> PostLikedAttractie([FromQuery] int id)
+        public async Task<ActionResult<LikedAttractie>> PostLikedAttractie([FromQuery] int attractieId)
         {
-            Attractie attractie = await _context.Attractie.FindAsync(id);
+            Attractie attractie = await _context.Attractie.FindAsync(attractieId);
             User user = await _userManager.GetUserAsync(this.User);
 
-            if (attractie == null || user == null)
-            {
-                return NotFound();
-            }
+            if (attractie == null || user == null) return NotFound();
+            
             List<LikedAttractie> likedAttracties = await _context.LikedAttractie.ToListAsync();
 
             for (int i = 0; i < likedAttracties.Count; i++)
             {
-                if (likedAttracties[i].Attractie == attractie && likedAttracties[i].User == user)
-                {
-                    return Problem("Attraction was already liked by: " + user.UserName + "!");
-                }
+                if (likedAttracties[i].Attractie == attractie && likedAttracties[i].User == user) return Problem("Attraction was already liked by: " + user.UserName + "!");
             }
             
             LikedAttractie likedAttractie = new LikedAttractie(attractie, user);
@@ -110,14 +134,23 @@ namespace APIweek6.Controllers
         }
 
         // DELETE: api/LikedAttractie/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLikedAttractie(int id)
+        [Authorize(Roles = "Gast,Medewerker")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteLikedAttractie([FromQuery] int attractieId)
         {
-            var likedAttractie = await _context.LikedAttractie.FindAsync(id);
-            if (likedAttractie == null)
+            Attractie attractie = await _context.Attractie.FindAsync(attractieId);
+            User user = await _userManager.GetUserAsync(this.User);
+
+            if (attractie == null || user == null) return NotFound();
+            
+            List<LikedAttractie> likedAttracties = await _context.LikedAttractie.ToListAsync();
+
+            for (int i = 0; i < likedAttracties.Count; i++)
             {
-                return NotFound();
+                if (likedAttracties[i].Attractie == attractie && likedAttracties[i].User == user) return Problem("Attraction was already liked by: " + user.UserName + "!");
             }
+            
+            LikedAttractie likedAttractie = new LikedAttractie(attractie, user);
 
             _context.LikedAttractie.Remove(likedAttractie);
             await _context.SaveChangesAsync();
@@ -129,8 +162,5 @@ namespace APIweek6.Controllers
         {
             return (_context.LikedAttractie?.Any(e => e.AttractieId == id)).GetValueOrDefault();
         }
-
     }
-    
-
 }

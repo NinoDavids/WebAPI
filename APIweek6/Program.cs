@@ -16,12 +16,6 @@ builder.Services.AddIdentity<User, IdentityRole>()
 builder.Services.AddDbContext<PretparkContext>(options =>
     options.UseSqlite("Data Source=db.db"));
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("ElevatedRights", policy =>
-        policy.RequireRole("Administrator", "PowerUser", "BackupAdministrator"));
-});
-
 builder.Services.AddControllersWithViews()
     .AddNewtonsoftJson(options =>
         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore

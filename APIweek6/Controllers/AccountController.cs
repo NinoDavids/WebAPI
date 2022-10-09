@@ -36,34 +36,25 @@ public class AccountController : ControllerBase
     [Route("registreer")]
     public async Task<ActionResult<IEnumerable<User>>> Registreer([FromBody] GebruikerMetWachwoord gebruikerMetWachtwoord)
     {
-        if ((int)gebruikerMetWachtwoord.Gender >= 4 || (int)gebruikerMetWachtwoord.Gender < 0)
-        {
-            return Problem(detail:"Gender isn't a valid value!");
-        }
-
+        if ((int)gebruikerMetWachtwoord.Gender >= 4 || (int)gebruikerMetWachtwoord.Gender < 0) return Problem(detail:"Gender isn't a valid value!");
+        
         var resultaat = await _userManager.CreateAsync(gebruikerMetWachtwoord, gebruikerMetWachtwoord.Password);
         return !resultaat.Succeeded ? new BadRequestObjectResult(resultaat) : StatusCode(201);
     }
-
+    [Authorize(Roles = "Medewerker")]
     [HttpGet("{id}")]
     public async Task<ActionResult<User>> GetUserWithID(String id)
     {
         User user = await _userManager.FindByIdAsync(id);
-        if (user == null)
-        {
-            return NotFound();
-        }
+        if (user == null) return NotFound();
         return user;
     }
-
+    [Authorize(Roles = "Medewerker")]
     [HttpGet("{username}")]
     public async Task<ActionResult<User>> GetUserWithName(String username)
     {
         User user = await _userManager.FindByNameAsync(username);
-        if (user == null)
-        {
-            return NotFound();
-        }
+        if (user == null) return NotFound();
         return user;
     }
 
@@ -80,6 +71,11 @@ public class AccountController : ControllerBase
         if (user != null)
         {
             await _signInManager.SignInAsync(user, true);
+            if (_userManager.GetRolesAsync(user) != null)
+            {
+                await _userManager.AddToRoleAsync(user, "Gast");
+            }
+
             return Ok();
         }
 

@@ -1,3 +1,5 @@
+using APIweek6.Data;
+using APIweek6.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Framework;
@@ -9,11 +11,12 @@ namespace APIweek6.Controllers
     [ApiController]
     public class RoleController : Controller
     {
-
-        private RoleManager<IdentityRole> roleManager;
-        public RoleController(RoleManager<IdentityRole> roleMgr)
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
+        public RoleController(RoleManager<IdentityRole> roleMgr, UserManager<User> userManager)
         {
             roleManager = roleMgr;
+            _userManager = userManager;
         }
         private void Errors(IdentityResult result)
         {
@@ -74,16 +77,26 @@ namespace APIweek6.Controllers
             return !resultaat.Succeeded ? new BadRequestObjectResult(resultaat) : StatusCode(201);
         }
 
-        // [HttpPost]
-        // public async Task<IActionResult> AddRoleToUser(string name)
-        // {
-        //     if (!ModelState.IsValid)
-        //     {
-        //         return Problem("ModelState is invalid!");
-        //     }
-        //     IdentityResult resultaat = await roleManager.CreateAsync(new IdentityRole(name));
-        //     return !resultaat.Succeeded ? new BadRequestObjectResult(resultaat) : StatusCode(201);
-        // }
+        [HttpPost("AddRole/{username}/{roleName}")]
+        public async Task<IActionResult> AddRoleToUser(string username, string roleName)
+        { 
+            if (!ModelState.IsValid) 
+            {
+                return Problem("ModelState is invalid!");
+            }
+            User user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                return NotFound("No user found with that name!");
+            }
+            IdentityRole role = await roleManager.FindByNameAsync(roleName);
+            if (role == null)
+            {
+                return NotFound("No role found with that name!");
+            }
+            await _userManager.AddToRoleAsync(user, role.Name);
+            return StatusCode(201);
+         }
         //
         // [HttpPost]
         // public async Task<IActionResult> RemoveRoleToUser(string name)
