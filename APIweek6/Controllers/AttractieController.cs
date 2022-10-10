@@ -18,8 +18,8 @@ namespace APIweek6.Controllers
     {
         private readonly PretparkContext _context;
         private readonly int pageSize = 10;
-        
-        
+
+
         public AttractieController(PretparkContext context)
         {
             _context = context;
@@ -48,9 +48,9 @@ namespace APIweek6.Controllers
             }
 
             if (attractieListFull.Count == 0) return NotFound("there are no attractions!");
-            
+
             List<string> attractieListToSend = new List<string>();
-            
+
             int startCount = (page * pageSize) - pageSize;
             for (int i = startCount; (i < startCount + pageSize); i++)
             {
@@ -69,7 +69,89 @@ namespace APIweek6.Controllers
         }
 
         [Authorize(Roles = "Gast,Medewerker")]
-        [HttpGet("Sort/{sort}/{ascdec?}")]
+        [HttpGet("FilterSortPage/{filter}/{minValue}/{maxValue}/{sort}/{page}/{ascdec?}")]
+        public async Task<ActionResult<IEnumerable<string>>> GetAttractieByFilterSortPage(int page, bool? ascdec)
+        {
+            List<Attractie> attractieListFull = new List<Attractie>();
+            if (ascdec == null || ascdec == false)
+            {
+                attractieListFull = await _context.Attractie.OrderBy(a=> a.Id).ToListAsync();
+            }
+            else
+            {
+                attractieListFull = await _context.Attractie.OrderByDescending(a=> a.Id).ToListAsync();
+            }
+
+            if (attractieListFull.Count == 0) return NotFound("there are no attractions!");
+
+            List<string> attractieListToSend = new List<string>();
+
+            int startCount = (page * pageSize) - pageSize;
+            for (int i = startCount; (i < startCount + pageSize); i++)
+            {
+                if (i > (attractieListFull.Count -1)) break;
+                attractieListToSend.Add("Id: " + attractieListFull[i].Id + " Name: " + attractieListFull[i].name + " spooky: " + attractieListFull[i].spooky + " buildyear: " + attractieListFull[i].buildYeaar);
+            }
+
+            if (attractieListToSend.Count == 0)
+            {
+                var results = Enumerable.Repeat(pageSize, page/pageSize).ToList();
+                if(page % pageSize != 0) results.Add(page % pageSize);
+                return Problem("There are no attractions on this page: page " + page + ", there are only " + attractieListFull.Count + " attractions in total (" + results.Count + " pages of attractions!)");
+            }
+
+            return attractieListToSend;
+        }
+
+        [Authorize(Roles = "Gast,Medewerker")]
+        [HttpGet("filter/{filter}/{minValue}/{maxValue}/{ascdec?}")]
+        public async Task<ActionResult<IEnumerable<string>>> GetAttractieByFilter(string filter, int minValue, int maxValue ,bool? ascdec)
+        {
+            List<Attractie> attractieListFull = await _context.Attractie.ToListAsync();
+
+            if (attractieListFull.Count == 0) return NotFound("there are no attractions!");
+            List<Attractie> attractieListFiltered = new List<Attractie>();
+
+            if (ascdec != null || ascdec == false)
+            {
+                switch (filter.ToLower())
+                {
+                    case "spooky": case "engheid":
+                        attractieListFiltered = attractieListFull.OrderBy(a=>a.spooky).Where(a => a.spooky >= minValue && a.spooky <= maxValue).ToList();
+                        break;
+                    case "buildyear": case "bouwjaar": case "year": case "jaar":
+                        attractieListFiltered = attractieListFull.OrderBy(a=>a.buildYeaar).Where(a => a.buildYeaar.Year >= minValue && a.buildYeaar.Year <= maxValue).ToList();
+                        break;
+                    default:
+                        return Problem("your sort parameter isn't a valid value! (valid values: spooky (engheid), buildyear (bouwjaar, year, jaar))");
+                }
+            }
+            else
+            {
+                switch (filter.ToLower())
+                {
+                    case "spooky": case "engheid":
+                        attractieListFiltered = attractieListFull.OrderByDescending(a=>a.spooky).Where(a => a.spooky >= minValue && a.spooky <= maxValue).ToList();
+                        break;
+                    case "buildyear": case "bouwjaar": case "year": case "jaar":
+                        attractieListFiltered = attractieListFull.OrderByDescending(a=>a.buildYeaar).Where(a => a.buildYeaar.Year >= minValue && a.buildYeaar.Year <= maxValue).ToList();
+                        break;
+                    default:
+                        return Problem("your sort parameter isn't a valid value! (valid values: spooky (engheid), buildyear (bouwjaar, year, jaar))");
+                }
+            }
+
+            List<string> attractieList = new List<string>();
+            foreach (Attractie attractie in attractieListFiltered)
+            {
+                attractieList.Add("Id: " + attractie.Id + " Name: " + attractie.name + " spooky: " + attractie.spooky + " buildyear: " + attractie.buildYeaar);
+            }
+
+            return attractieList;
+        }
+
+        [Authorize(Roles = "Gast,Medewerker")]
+        [HttpGet("sort/{sort}/{ascdec?}")]
         public async Task<ActionResult<IEnumerable<string>>> GetAttractieBySort(string sort, bool? ascdec)
         {
             List<Attractie> attractieListFull = await _context.Attractie.ToListAsync();
@@ -117,16 +199,16 @@ namespace APIweek6.Controllers
                         return Problem("your sort parameter isn't a valid value! (valid values: name (naam), spooky (engheid), buildyear (bouwjaar, year, jaar), id (identity, number, nummer))");
                 }
             }
-            
+
             List<string> attractieList = new List<string>();
             foreach (Attractie attractie in attractieListSorted)
             {
                 attractieList.Add("Id: " + attractie.Id + " Name: " + attractie.name + " spooky: " + attractie.spooky + " buildyear: " + attractie.buildYeaar);
             }
-            
+
             return attractieList;
         }
-        
+
         // GET: api/Attractie/5
         [Authorize(Roles = "Gast,Medewerker")]
         [HttpGet("{id}")]
@@ -156,7 +238,7 @@ namespace APIweek6.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 if (!AttractieExists(id)) return NotFound();
-                
+
                 else throw;
             }
 
@@ -170,9 +252,9 @@ namespace APIweek6.Controllers
         public async Task<ActionResult<Attractie>> PostAttractie(Attractie attractie)
         {
             var attractieList = await _context.Attractie.Where(x => x.name == attractie.name).ToListAsync();
-            
+
             if (attractieList.Count != 0) return Problem("Attraction already exists with than name!");
-            
+
             _context.Attractie.Add(attractie);
             await _context.SaveChangesAsync();
             return CreatedAtAction("GetAttractie", new { id = attractie.Id }, attractie);
@@ -191,7 +273,7 @@ namespace APIweek6.Controllers
 
             return NoContent();
         }
-        
+
         [Authorize(Roles = "Gast,Medewerker")]
         [HttpGet("{id}/Name")]
         public async Task<ActionResult<String>> GetAttractieName(int id)
@@ -202,7 +284,7 @@ namespace APIweek6.Controllers
 
             return attractie.name;
         }
-        
+
         [Authorize(Roles = "Gast,Medewerker")]
         [HttpGet("{id}/Spooky")]
         public async Task<ActionResult<int>> GetAttractieSpooky(int id)
@@ -213,7 +295,7 @@ namespace APIweek6.Controllers
 
             return attractie.spooky;
         }
-        
+
         [Authorize(Roles = "Gast,Medewerker")]
         [HttpGet("{id}/BuildYear")]
         public async Task<ActionResult<DateTime>> GetAttractieDate(int id)

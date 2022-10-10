@@ -831,3 +831,6 @@ C:\Users\Nino\RiderProjects\APIweek6\WebAPI\APIweek6\obj\Debug\net6.0\ref\APIwee
 C:\Users\Nino\Documents\GitHub\WebAPI\APIweek6\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
 C:\Users\Nino\Documents\GitHub\WebAPI\APIweek6\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\Nino\Documents\GitHub\WebAPI\APIweek6\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
+C:\Users\Nino\RiderProjects\APIweek6\WebAPI\APIweek6\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\Nino\RiderProjects\APIweek6\WebAPI\APIweek6\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\Nino\RiderProjects\APIweek6\WebAPI\APIweek6\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
