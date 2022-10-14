@@ -191,7 +191,7 @@ namespace APIweek6.Controllers
         // PUT: api/Attractie/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "Medewerker")]
-        [HttpPut]
+        [HttpPut("edit/{naam}")]
         public async Task<IActionResult> PutAttractie(string naam, string? nieuwenaam, int? nieuwespooky)
         {
             var attractie = _context.Attractie.Single(x => x.name.ToLower() == naam.ToLower());
