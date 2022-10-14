@@ -191,18 +191,19 @@ namespace APIweek6.Controllers
         // PUT: api/Attractie/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "Medewerker")]
-        [HttpPut("{naam}/{nieuwenaam?}/{nieuwespooky?}")]
-        public async Task<IActionResult> PutAttractie(string naam, string? nieuwenaam, int spooky)
+        [HttpPut]
+        public async Task<IActionResult> PutAttractie(string naam, string? nieuwenaam, int? nieuwespooky)
         {
-            var attractieList = await _context.Attractie.Where(x => x.name == naam).ToListAsync();
-            if (attractieList.Count == 0) return Problem();
+            var attractie = _context.Attractie.Single(x => x.name.ToLower() == naam.ToLower());
+            if (attractie.Equals(null)) return Problem();
 
-            Attractie attractie = attractieList[0];
-
-            Attractie attractie = attractie.Id, nieuwenaam, nieuwenaam, attractie.buildYeaar, attractie.LikedAttracties);
+            if (nieuwenaam == null) nieuwenaam = attractie.name;
+            if (nieuwespooky == null) nieuwespooky = attractie.spooky;
 
             try
             {
+                attractie.name = nieuwenaam;
+                attractie.spooky = nieuwespooky.Value;
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
