@@ -37,7 +37,7 @@ namespace APIweek6.Controllers
         [HttpGet("page/{page}/{ascdec?}")]
         public async Task<ActionResult<IEnumerable<string>>> GetAttractieByPage(int page, bool? ascdec)
         {
-            List<Attractie> attractieListFull = new List<Attractie>();
+            List<Attractie> attractieListFull;
             if (ascdec == null || ascdec == false)
             {
                 attractieListFull = await _context.Attractie.OrderBy(a=> a.Id).ToListAsync();
@@ -75,7 +75,7 @@ namespace APIweek6.Controllers
             List<Attractie> attractieListFull = await _context.Attractie.ToListAsync();
 
             if (attractieListFull.Count == 0) return NotFound("there are no attractions!");
-            List<Attractie> attractieListFiltered = new List<Attractie>();
+            List<Attractie> attractieListFiltered;
 
             if (ascdec != null || ascdec == false)
             {
@@ -124,7 +124,7 @@ namespace APIweek6.Controllers
             List<Attractie> attractieListFull = await _context.Attractie.ToListAsync();
 
             if (attractieListFull.Count == 0) return NotFound("there are no attractions!");
-            List<Attractie> attractieListSorted = new List<Attractie>();
+            List<Attractie> attractieListSorted;
 
             if (ascdec != null || ascdec == false)
             {
@@ -194,8 +194,8 @@ namespace APIweek6.Controllers
         [HttpPut("edit/{naam}")]
         public async Task<IActionResult> PutAttractie(string naam, string? nieuwenaam, int? nieuwespooky)
         {
-            var attractie = _context.Attractie.Single(x => x.name.ToLower() == naam.ToLower());
-            if (attractie.Equals(null)) return Problem();
+            var attractie = await _context.Attractie.FirstOrDefaultAsync(x => x.name.ToLower() == naam.ToLower());
+            if (attractie == null) return Problem();
 
             if (nieuwenaam == null) nieuwenaam = attractie.name;
             if (nieuwespooky == null) nieuwespooky = attractie.spooky;
@@ -219,9 +219,9 @@ namespace APIweek6.Controllers
         [HttpPost]
         public async Task<ActionResult<Attractie>> PostAttractie(Attractie attractie)
         {
-            var attractieList = await _context.Attractie.Where(x => x.name == attractie.name).ToListAsync();
+            var attractieFromDb = await _context.Attractie.FirstOrDefaultAsync(x => x.name == attractie.name);
 
-            if (attractieList.Count != 0) return Problem("Attraction already exists with than name!");
+            if (attractieFromDb != null) return Problem("Attraction already exists with than name!");
 
             _context.Attractie.Add(attractie);
             await _context.SaveChangesAsync();

@@ -15,7 +15,7 @@ namespace APIweek6.Controllers;
 
 public class GebruikerMetWachwoord : User
 {
-    public Gender Gender { get; init; }
+    public new Gender Gender { get; init; }
     public string? Password { get; init; }
 }
 

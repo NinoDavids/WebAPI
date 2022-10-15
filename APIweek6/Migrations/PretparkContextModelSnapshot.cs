@@ -234,15 +234,15 @@ namespace APIweek6.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9171e04d-0c10-421d-9efd-4cbbbee0eb69",
-                            ConcurrencyStamp = "4cb24b93-8cbe-480a-8048-84e6e5b42df6",
+                            Id = "5cdce045-ccaa-48d7-97c0-3241b6613956",
+                            ConcurrencyStamp = "c1b91f68-4e58-4d43-8c7f-86baed8e20cf",
                             Name = "Medewerker",
                             NormalizedName = "MEDEWERKER"
                         },
                         new
                         {
-                            Id = "6c279b39-5a0e-4d52-b9c0-184c928dbc44",
-                            ConcurrencyStamp = "fc4dcfe2-2bee-4dbe-bd7b-15ea9f3bfc60",
+                            Id = "d4c29ece-d185-453e-8845-0831eca38ac0",
+                            ConcurrencyStamp = "c68d6475-1bd3-4987-baa0-51619aa43671",
                             Name = "Gast",
                             NormalizedName = "GAST"
                         });

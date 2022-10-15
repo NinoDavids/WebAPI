@@ -27,8 +27,6 @@ namespace APIweek6.Controllers
             _userManager = userManager;
         }
 
-
-
         // GET: api/LikedAttractie
         [Authorize(Roles = "Medewerker")]
         [HttpGet]
@@ -41,11 +39,9 @@ namespace APIweek6.Controllers
         [HttpGet("getUsernames/{attractieName}")]
         public async Task<ActionResult<IEnumerable<string>>> GetPeopleWhoLikedAttractie(string attractieName)
         {
-            var attractieList = await _context.Attractie.Where(x => x.name == attractieName).ToListAsync();
+            var attractie = await _context.Attractie.FirstOrDefaultAsync(x => x.name == attractieName);
 
-            if (attractieList.Count == 0 || attractieList.Count > 1) return NotFound();
-
-            Attractie attractie = attractieList[0];
+            if (attractie == null) return Problem("no attraction with the name: " + attractieName);
 
             var likedAttractieList = await _context.LikedAttractie.Where(x => x.AttractieId == attractie.Id).ToListAsync();
 
@@ -65,17 +61,13 @@ namespace APIweek6.Controllers
         [HttpGet("getAmountOfLikes/{attractieName}")]
         public async Task<ActionResult<string>> GetAmountOfLikesOnAttractie(string attractieName)
         {
-            var attractieList = await _context.Attractie.Where(x => x.name == attractieName).ToListAsync();
+            var attractie = await _context.Attractie.FirstOrDefaultAsync(x => x.name == attractieName);
 
-            if (attractieList.Count == 0 || attractieList.Count > 1) return NotFound();
-
-            Attractie attractie = attractieList[0];
+            if (attractie == null) return Problem("no attraction with the name: " + attractieName);
 
             List<LikedAttractie> likedAttracties = await _context.LikedAttractie.Where(x => x.AttractieId == attractie.Id).ToListAsync();
 
             if (likedAttracties.Count == 1) return attractie.name + " has: " + likedAttracties.Count + " like";
-
-            Console.WriteLine(likedAttracties.Count);
 
             return attractie.name + " has: " + likedAttracties.Count + " likes";
         }
@@ -83,9 +75,7 @@ namespace APIweek6.Controllers
         [HttpGet("getLikes/{attractieName}")]
         public async Task<ActionResult<IEnumerable<LikedAttractie>>> GetLikesOnAttractie(string attractieName)
         {
-            var attractieList = await _context.Attractie.Where(x => x.name == attractieName).ToListAsync();
-            if (attractieList.Count == 0 || attractieList.Count > 1) return NotFound();
-            Attractie attractie = attractieList[0];
+            Attractie attractie = _context.Attractie.Single(x => x.name == attractieName);
             return await _context.LikedAttractie.Where(x => x.AttractieId == attractie.Id).ToListAsync();
         }
 
@@ -93,10 +83,10 @@ namespace APIweek6.Controllers
         [HttpPost ("like/{attractieName}")]
         public async Task<ActionResult<LikedAttractie>> PostLikedAttractie(string attractieName)
         {
-            var attractieList = await _context.Attractie.Where(x => x.name == attractieName).ToListAsync();
-            if (attractieList.Count == 0) return Problem("No attraction found with the name: " + attractieName);
-            var attractie = attractieList[0];            User user = await _userManager.GetUserAsync(this.User);
+            var attractie = await _context.Attractie.FirstOrDefaultAsync(x => x.name == attractieName);
+            if (attractie == null) return Problem("no attraction with the name: " + attractieName);
 
+            User user = await _userManager.GetUserAsync(this.User);
             if (user == null) return NotFound();
 
             List<LikedAttractie> likedAttracties = await _context.LikedAttractie.ToListAsync();
@@ -118,9 +108,8 @@ namespace APIweek6.Controllers
         [HttpDelete ("dislike/{attractieName}")]
         public async Task<IActionResult> DeleteLikedAttractie(string attractieName)
         {
-            var attractieList = await _context.Attractie.Where(x => x.name == attractieName).ToListAsync();
-            if (attractieList.Count == 0) return Problem("No attraction found with the name: " + attractieName);
-            var attractie = attractieList[0];
+            var attractie = await _context.Attractie.FirstOrDefaultAsync(x => x.name == attractieName);
+            if (attractie == null) return Problem("no attraction with the name: " + attractieName);
             User user = await _userManager.GetUserAsync(this.User);
 
             if (user == null) return NotFound();

@@ -13,10 +13,10 @@ namespace APIweek6.Controllers
     public class RoleController : Controller
     {
         private readonly UserManager<User> _userManager;
-        private readonly RoleManager<IdentityRole> roleManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         public RoleController(RoleManager<IdentityRole> roleMgr, UserManager<User> userManager)
         {
-            roleManager = roleMgr;
+            _roleManager = roleMgr;
             _userManager = userManager;
         }
         private void Errors(IdentityResult result)
@@ -28,8 +28,8 @@ namespace APIweek6.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<IdentityRole>>> GetRoles()
         {
-            if (roleManager.Roles == null) return NotFound();
-            return await roleManager.Roles.ToListAsync();
+            if (_roleManager.Roles == null) return NotFound();
+            return await _roleManager.Roles.ToListAsync();
         }
 
         [Authorize(Roles = "Medewerker")]
@@ -38,20 +38,20 @@ namespace APIweek6.Controllers
         {
             if (!ModelState.IsValid) return Problem("ModelState is invalid!");
 
-            IdentityResult resultaat = await roleManager.CreateAsync(new IdentityRole(name));
+            IdentityResult resultaat = await _roleManager.CreateAsync(new IdentityRole(name));
             return !resultaat.Succeeded ? new BadRequestObjectResult(resultaat) : StatusCode(201);
         }
 
         [Authorize(Roles = "Medewerker")]
         [HttpDelete("DeleteWithID/{id}")]
-        public async Task<IActionResult> DeleteRolesByID(string id)
+        public async Task<IActionResult> DeleteRolesById(string id)
         {
-            if (roleManager.Roles == null) return NotFound();
+            if (_roleManager.Roles == null) return NotFound();
 
-            IdentityRole role = await roleManager.FindByIdAsync(id);
+            IdentityRole role = await _roleManager.FindByIdAsync(id);
             if (role == null) return NotFound();
 
-            IdentityResult resultaat = await roleManager.DeleteAsync(role);
+            IdentityResult resultaat = await _roleManager.DeleteAsync(role);
             return !resultaat.Succeeded ? new BadRequestObjectResult(resultaat) : StatusCode(201);
         }
 
@@ -59,12 +59,12 @@ namespace APIweek6.Controllers
         [HttpDelete("DeleteWithName/{name}")]
         public async Task<IActionResult> DeleteRolesByName(string name)
         {
-            if (roleManager.Roles == null) return NotFound();
+            if (_roleManager.Roles == null) return NotFound();
 
-            IdentityRole role = await roleManager.FindByNameAsync(name);
+            IdentityRole role = await _roleManager.FindByNameAsync(name);
             if (role == null) return NotFound();
 
-            IdentityResult resultaat = await roleManager.DeleteAsync(role);
+            IdentityResult resultaat = await _roleManager.DeleteAsync(role);
             return !resultaat.Succeeded ? new BadRequestObjectResult(resultaat) : StatusCode(201);
         }
 
@@ -75,9 +75,9 @@ namespace APIweek6.Controllers
             if (!ModelState.IsValid) return Problem("ModelState is invalid!");
 
             User user = await _userManager.FindByNameAsync(username);
-            IdentityRole role = await roleManager.FindByNameAsync(roleName);
+            IdentityRole role = await _roleManager.FindByNameAsync(roleName);
             if (user == null) return NotFound("No user or role found with that name!");
-
+            
             var result = await _userManager.AddToRoleAsync(user, role.Name);
             if (result.Succeeded) return StatusCode(201);
             return Problem();
@@ -93,7 +93,7 @@ namespace APIweek6.Controllers
             }
 
             User user = await _userManager.FindByNameAsync(username);
-            IdentityRole role = await roleManager.FindByNameAsync(roleName);
+            IdentityRole role = await _roleManager.FindByNameAsync(roleName);
             if (user == null || role == null) return NotFound("No user or role found with that name!");
 
             var result = await _userManager.RemoveFromRoleAsync(user, role.Name);

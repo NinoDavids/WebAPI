@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace APIweek6.Migrations
 {
-    public partial class Test69420 : Migration
+    public partial class _1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -197,12 +197,12 @@ namespace APIweek6.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "6c279b39-5a0e-4d52-b9c0-184c928dbc44", "fc4dcfe2-2bee-4dbe-bd7b-15ea9f3bfc60", "Gast", "GAST" });
+                values: new object[] { "5cdce045-ccaa-48d7-97c0-3241b6613956", "c1b91f68-4e58-4d43-8c7f-86baed8e20cf", "Medewerker", "MEDEWERKER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "9171e04d-0c10-421d-9efd-4cbbbee0eb69", "4cb24b93-8cbe-480a-8048-84e6e5b42df6", "Medewerker", "MEDEWERKER" });
+                values: new object[] { "d4c29ece-d185-453e-8845-0831eca38ac0", "c68d6475-1bd3-4987-baa0-51619aa43671", "Gast", "GAST" });
 
             migrationBuilder.InsertData(
                 table: "Attractie",
